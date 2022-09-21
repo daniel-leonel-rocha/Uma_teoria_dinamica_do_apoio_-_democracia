@@ -32,7 +32,7 @@ q = q %>%
 # 4. Variáveis 
 
 # 4.1. polyarchy_1_1 = Tolerância sobre manifetações legais 
-#[1 = desaprova | 7 = aprova]
+# [1 = desaprova | 7 = aprova]
 
 ########## Outras variáveis possíveis neste bloco de perguntas ##########
 
@@ -41,7 +41,6 @@ polyarchy_1_3 = campanhas eleitorais
 polyarchy_1_4 = bloqueio de ruas ou rodovias  
 polyarchy_1_5 = invasão de propriedade  
 
-########## Outras variáveis possíveis neste bloco de perguntas ##########
 ```{r}
 q = q %>%
   mutate(poli1 = polyarchy_1_1) # Selecionamos esta variável no artigo
