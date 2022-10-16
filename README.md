@@ -83,6 +83,13 @@ q = q %>%
 
 Tratamento 1 - Voto em Bolsonaro
 ```{r}
+trat1.1 = plm(democracia ~ votoBolsonaro + data_trat + votoBolsonaro*data_trat,
+              weights = weight, model = "random", 
+              index = c("idnumber", "wave"),
+              data = q)
+
+summary(trat1.1)
+
 trat1 = plm(democracia ~ votoBolsonaro + data_trat + votoBolsonaro*data_trat,
             weights = weight, model = "within", 
             index = c("idnumber", "wave"),
@@ -90,7 +97,10 @@ trat1 = plm(democracia ~ votoBolsonaro + data_trat + votoBolsonaro*data_trat,
 
 summary(trat1)
 
+phtest(trat1.1,trat1) # o modelo de efeitos fixos é melhor
+
 mean(fixef(trat1)) #Média dos interceptos
+
 
 # calculo da diferença de médias (Diff-in-Diff)
 
@@ -105,8 +115,9 @@ df_df = df_t - df_c
 
 x = c(0,0,1,1)
 y = c(5.189077,5.256803,5.589482,6.167198)#segundo valor (y),último valor (yend)
-voto = c("não votou","votou","não votou","votou")
+voto = c("(G2) não votou","(G1) votou","(G2) não votou","(G1) votou")
 objeto = data.frame(x, y, voto)
+
 
 objeto %>% ggplot(aes(x = x, y = y, 
                       color = voto)) +
@@ -118,6 +129,7 @@ objeto %>% ggplot(aes(x = x, y = y,
   annotate(geom = "segment", x = 1, xend = 1,
            y = t1 - df_df, yend = 6.167198,
            color = "black") +
+  annotate("text",y=6,x=0.2,label = "R-Squared = 0.083 \np-valor < 0.000") +
   scale_x_continuous(breaks = c(0,1)) +
   labs(
     y = "",
@@ -129,12 +141,21 @@ objeto %>% ggplot(aes(x = x, y = y,
 
 Tratamento 2 - Voto em Haddad 
 ```{r}
+trat2.1 = plm(democracia ~ votoHaddad + data_trat +
+              votoHaddad*data_trat, weights = weight, model = "random", 
+            index = c("idnumber", "wave"),
+            data = q)
+
+summary(trat2.1)
+
 trat2 = plm(democracia ~ votoHaddad + data_trat +
               votoHaddad*data_trat, weights = weight, model = "within", 
             index = c("idnumber", "wave"),
             data = q)
 
 summary(trat2)
+
+phtest(trat2,trat2.1) # o modelo de efeitos fixos é melhor
 
 mean(fixef(trat2)) #Média dos interceptos
 
@@ -151,7 +172,7 @@ df_df = df_t - df_c
 
 x = c(0,0,1,1)
 y = c(5.20458,5.245026,5.910306,5.146255)#segundo valor (y),último valor (yend)
-voto = c("não votou","votou","não votou","votou")
+voto = c("(G2) não votou","(G1) votou","(G2) não votou","(G1) votou")
 objeto = data.frame(x, y, voto)
 
 objeto %>% ggplot(aes(x = x, y = y, 
@@ -164,6 +185,7 @@ objeto %>% ggplot(aes(x = x, y = y,
   annotate(geom = "segment", x = 1, xend = 1,
            y = t1 - df_df, yend = 5.146255,
            color = "black") +
+  annotate("text",y=5.8,x=0.2,label = "R-Squared = 0.081 \np-valor < 0.000") +
   scale_x_continuous(breaks = c(0,1)) +
   labs(
     y = "",
@@ -177,12 +199,21 @@ objeto %>% ggplot(aes(x = x, y = y,
 
 Tratamento 1 - Voto em Bolsonaro 
 ```{r}
+trat1.1 = plm(poli1 ~ votoBolsonaro + data_trat + votoBolsonaro*data_trat,
+            weights = weight, model = "random", 
+            index = c("idnumber", "wave"),
+            data = q)
+
+summary(trat1.1)
+
 trat1 = plm(poli1 ~ votoBolsonaro + data_trat + votoBolsonaro*data_trat,
             weights = weight, model = "within", 
             index = c("idnumber", "wave"),
             data = q)
 
 summary(trat1)
+
+phtest(trat1,trat1.1) # o modelo de efeitos fixos é melhor
 
 mean(fixef(trat1)) #Média dos interceptos
 
@@ -199,8 +230,9 @@ df_df = df_t - df_c
 
 x = c(0,0,1,1)
 y = c(5.356646,5.898119,5.2371,5.909268)#segundo valor (y),último valor (yend)
-voto = c("não votou","votou","não votou","votou")
+voto = c("(G2) não votou","(G1) votou","(G2) não votou","(G1) votou")
 objeto = data.frame(x, y, voto)
+
 
 objeto %>% ggplot(aes(x = x, y = y, 
                       color = voto)) +
@@ -212,6 +244,7 @@ objeto %>% ggplot(aes(x = x, y = y,
   annotate(geom = "segment", x = 1, xend = 1,
            y = t1 - df_df, yend = 5.909268,
            color = "black") +
+  annotate("text",y=5.7,x=0.2,label = "R-Squared = 0.001 \np-valor < 0.000") +
   scale_x_continuous(breaks = c(0,1)) +
   labs(
     y = "",
@@ -223,12 +256,21 @@ objeto %>% ggplot(aes(x = x, y = y,
 
 Tratamento 2 - Voto em Haddad 
 ```{r}
+trat2.1 = plm(poli1 ~ votoHaddad + data_trat +
+              votoHaddad*data_trat, weights = weight, model = "random", 
+            index = c("idnumber", "wave"),
+            data = q)
+
+summary(trat2.1)
+
 trat2 = plm(poli1 ~ votoHaddad + data_trat +
               votoHaddad*data_trat, weights = weight, model = "within", 
             index = c("idnumber", "wave"),
             data = q)
 
 summary(trat2)
+
+phtest(trat2,trat2.1) # o modelo de efeitos fixos é melhor
 
 mean(fixef(trat2)) #Média dos interceptos
 
@@ -245,7 +287,7 @@ df_df = df_t - df_c
 
 x = c(0,0,1,1)
 y = c(5.635832,4.78032,5.59863,4.846593)#segundo valor (y),último valor (yend)
-voto = c("não votou","votou","não votou","votou")
+voto = c("(G2) não votou","(G1) votou","(G2) não votou","(G1) votou")
 objeto = data.frame(x, y, voto)
 
 objeto %>% ggplot(aes(x = x, y = y, 
@@ -258,6 +300,7 @@ objeto %>% ggplot(aes(x = x, y = y,
   annotate(geom = "segment", x = 1, xend = 1,
            y = t1 - df_df, yend = 4.846593,
            color = "black") +
+  annotate("text",y=5.2,x=0.2,label = "R-Squared = 0.005 \np-valor < 0.000") +
   scale_x_continuous(breaks = c(0,1)) +
   labs(
     y = "",
@@ -271,12 +314,21 @@ objeto %>% ggplot(aes(x = x, y = y,
 
 Tratamento 1 - Voto em Bolsonaro 
 ```{r}
+trat1.1 = plm(eleições ~ votoBolsonaro + data_trat + votoBolsonaro*data_trat,
+            weights = weight, model = "random", 
+            index = c("idnumber", "wave"),
+            data = q)
+
+summary(trat1.1)
+
 trat1 = plm(eleições ~ votoBolsonaro + data_trat + votoBolsonaro*data_trat,
             weights = weight, model = "within", 
             index = c("idnumber", "wave"),
             data = q)
 
 summary(trat1)
+
+phtest(trat1,trat1.1) # o modelo de efeitos fixos é melhor
 
 mean(fixef(trat1)) #Média dos interceptos
 
@@ -293,7 +345,7 @@ df_df = df_t - df_c
 
 x = c(0,0,1,1)
 y = c(3.549046,3.609352,4.03503,4.960114)#segundo valor (y),último valor (yend)
-voto = c("não votou","votou","não votou","votou")
+voto = c("(G2) não votou","(G1) votou","(G2) não votou","(G1) votou")
 objeto = data.frame(x, y, voto)
 
 
@@ -307,6 +359,7 @@ objeto %>% ggplot(aes(x = x, y = y,
   annotate(geom = "segment", x = 1, xend = 1,
            y = t1 - df_df, yend = 4.960114,
            color = "black") +
+  annotate("text",y=4.8,x=0.2,label = "R-Squared = 0.079 \np-valor < 0.000") +
   scale_x_continuous(breaks = c(0,1)) +
   labs(
     y = "",
@@ -318,12 +371,21 @@ objeto %>% ggplot(aes(x = x, y = y,
 
 Tratamento 2 - Voto em Haddad 
 ```{r}
+trat2.1 = plm(eleições ~ votoHaddad + data_trat +
+              votoHaddad*data_trat, weights = weight, model = "random", 
+            index = c("idnumber", "wave"),
+            data = q)
+
+summary(trat2.1)
+
 trat2 = plm(eleições ~ votoHaddad + data_trat +
               votoHaddad*data_trat, weights = weight, model = "within", 
             index = c("idnumber", "wave"),
             data = q)
 
 summary(trat2)
+
+phtest(trat2,trat2.1) # o modelo de efeitos fixos é melhor
 
 mean(fixef(trat2)) #Média dos interceptos
 
@@ -340,7 +402,7 @@ df_df = df_t - df_c
 
 x = c(0,0,1,1)
 y = c(3.514687,3.972417,4.444317,4.249197)#segundo valor (y),último valor (yend)
-voto = c("não votou","votou","não votou","votou")
+voto = c("(G2) não votou","(G1) votou","(G2) não votou","(G1) votou")
 objeto = data.frame(x, y, voto)
 
 objeto %>% ggplot(aes(x = x, y = y, 
@@ -353,6 +415,7 @@ objeto %>% ggplot(aes(x = x, y = y,
   annotate(geom = "segment", x = 1, xend = 1,
            y = t1 - df_df, yend = 4.249197,
            color = "black") +
+  annotate("text",y=4.5,x=0.2,label = "R-Squared = 0.069 \np-valor < 0.000") +
   scale_x_continuous(breaks = c(0,1)) +
   labs(
     y = "",
